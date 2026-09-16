@@ -1,0 +1,400 @@
+
+/* ---------- admin ---------- */
+
+.GarrisonAdmin-section {
+  margin-bottom: 30px;
+}
+
+.GarrisonAdmin-pair {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  max-width: 480px;
+}
+
+.GarrisonAdmin-list,
+.GarrisonAdmin-incidents {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.GarrisonAdmin-host,
+.GarrisonAdmin-server,
+.GarrisonAdmin-incident {
+  border: 1px solid var(--control-bg);
+  border-radius: 6px;
+  margin-bottom: 10px;
+  padding: 12px 14px;
+}
+
+.GarrisonAdmin-host {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.GarrisonAdmin-meta {
+  color: var(--muted-color);
+  display: block;
+  font-size: 12px;
+}
+
+.GarrisonAdmin-fields {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  margin: 12px 0;
+}
+
+.GarrisonAdmin-field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.GarrisonAdmin-toggles {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.GarrisonAdmin-icon {
+  border-top: 1px solid var(--control-bg);
+  margin-top: 12px;
+  padding-top: 12px;
+}
+
+.GarrisonAdmin-iconLabel {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+
+  img {
+    border-radius: 4px;
+    object-fit: contain;
+  }
+}
+
+/*
+ * 🚨 Loud. This is the state where Garrison gave up and a person has to act;
+ * a quiet grey note is how it gets scrolled past for a week.
+ */
+.GarrisonAdmin-attention {
+  align-items: center;
+  background: var(--alert-warning-bg, #a9750d);
+  border-radius: 4px;
+  color: var(--alert-warning-color, #fff);
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding: 8px 10px;
+}
+
+.GarrisonAdmin-token {
+  margin-bottom: 20px;
+}
+
+.GarrisonAdmin-tokenValue {
+  display: block;
+  font-size: 13px;
+  margin: 8px 0;
+  // The whole point is to select and copy it.
+  user-select: all;
+  word-break: break-all;
+}
+
+.GarrisonAdmin-incidentCause {
+  font-size: 14px;
+  margin: 4px 0;
+}
+
+.GarrisonAdmin-incidentActions {
+  color: var(--muted-color);
+  font-size: 12px;
+  margin: 6px 0 0;
+  padding-left: 18px;
+}
+
+.GarrisonAdmin-incident.is-abandoned {
+  border-color: var(--alert-warning-bg, #a9750d);
+}
+
+.GarrisonAdmin-empty {
+  color: var(--muted-color);
+}
+
+.GarrisonAdmin-iconRow {
+  align-items: center;
+  display: flex;
+  gap: 14px;
+}
+
+.GarrisonAdmin-iconPreview {
+  background: var(--control-bg);
+  border-radius: 4px;
+  max-height: 48px;
+  max-width: 140px;
+  object-fit: contain;
+  padding: 4px;
+}
+
+.GarrisonAdmin-iconActions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.GarrisonAdmin-iconLabel {
+  align-items: center;
+  display: flex;
+  font-weight: 400;
+  gap: 8px;
+  margin: 0;
+}
+
+.GarrisonAdmin-iconUrl {
+  margin-top: 10px;
+
+  label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+  }
+}
+
+.GarrisonAdmin-iconUrlRow {
+  display: flex;
+  gap: 8px;
+  max-width: 520px;
+}
+
+/*
+ * Garrison saying whether Garrison can reach anybody.
+ *
+ * 🚨 The three states are visually distinct because only one of them is a
+ * problem. `unknown` deliberately looks like a note rather than a warning: on
+ * a fresh install nothing has run yet, and a panel that opens shouting teaches
+ * an operator to stop reading it.
+ */
+.GarrisonAdmin-delivery {
+  border-inline-start: 3px solid var(--muted-color);
+  border-radius: 2px;
+  margin-bottom: 14px;
+  padding: 8px 12px;
+}
+
+.GarrisonAdmin-delivery-headline {
+  font-weight: 600;
+}
+
+.GarrisonAdmin-delivery--ok {
+  border-inline-start-color: var(--success-color, #6bbf6b);
+}
+
+.GarrisonAdmin-delivery--bad {
+  border-inline-start-color: var(--error-color, #d14848);
+
+  /* The only one that gets a tint. A panel where everything is coloured says
+     nothing about which line to read first. */
+  background: fade(#d14848, 8%);
+}
+
+.GarrisonAdmin-delivery--muted {
+  border-inline-start-color: var(--muted-color);
+}
+
+/*
+ * Scheduled work.
+ */
+.GarrisonSchedules {
+  margin: 14px 0;
+}
+
+.GarrisonSchedules-head {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+
+  h4 {
+    font-size: 14px;
+    margin: 0;
+  }
+}
+
+.GarrisonSchedule {
+  border: 1px solid var(--control-bg);
+  border-radius: 4px;
+  margin-top: 10px;
+  padding: 10px 12px;
+}
+
+/*
+ * 🚨 A disabled schedule is DIMMED, not hidden and not removed.
+ *
+ * It is still configured, and somebody turned it off on purpose — most often
+ * for one night. Hiding it would mean the only way to find it again is to
+ * remember it existed.
+ */
+.GarrisonSchedule--off {
+  opacity: 0.6;
+}
+
+.GarrisonSchedule-top {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.GarrisonSchedule-spacer {
+  flex: 1 1 auto;
+}
+
+.GarrisonSchedule-kind {
+  width: auto;
+}
+
+.GarrisonSchedule-time {
+  /* Wide enough for a 12-hour clock with AM/PM, which some locales render. */
+  width: 130px;
+}
+
+.GarrisonSchedule-tz {
+  max-width: 200px;
+  width: auto;
+}
+
+.GarrisonSchedule-days {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 10px 0;
+}
+
+.GarrisonSchedule-day {
+  background: var(--control-bg);
+  border: 0;
+  border-radius: 4px;
+  color: var(--control-color);
+  cursor: pointer;
+  font-size: 12px;
+  padding: 4px 10px;
+
+  &.is-on {
+    background: var(--primary-color);
+    color: #fff;
+  }
+}
+
+.GarrisonSchedule-warn {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  .GarrisonAdmin-field {
+    flex: 1 1 220px;
+  }
+}
+
+.GarrisonSchedule-warnMinutes {
+  max-width: 110px;
+}
+
+/*
+ * 🚨 The row said in words, under the controls that set it. Seven toggles, a
+ * clock and a timezone are individually obvious and collectively easy to
+ * misread; one sentence is what an operator can check against what they meant.
+ */
+.GarrisonSchedule-summary {
+  color: var(--muted-color);
+  font-size: 12px;
+  margin: 8px 0 0;
+}
+
+.GarrisonSchedule-remove {
+  color: var(--muted-color);
+}
+
+/*
+ * Linked accounts.
+ */
+.GarrisonAdmin-identities {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.GarrisonAdmin-identity {
+  align-items: baseline;
+  border-top: 1px solid var(--control-bg);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  padding: 6px 0;
+}
+
+/*
+ * 🚨 Dimmed, not hidden. An operator looking at this list is usually trying to
+ * work out why somebody's link did not take, and a claim still waiting for its
+ * code is the answer they came for.
+ */
+.GarrisonAdmin-identity.is-pending {
+  opacity: 0.7;
+}
+
+.GarrisonAdmin-identityPlayer {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.GarrisonAdmin-identityUser {
+  margin-inline-start: auto;
+}
+
+.GarrisonAdmin-tag {
+  background: var(--control-bg);
+  border-radius: 10px;
+  color: var(--muted-color);
+  font-size: 11px;
+  padding: 1px 8px;
+}
+
+/*
+ * Installing a new server.
+ */
+.GarrisonProvision {
+  margin-top: 8px;
+}
+
+.GarrisonProvision-form {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  .FormControl {
+    flex: 1 1 160px;
+    min-width: 0;
+    width: auto;
+  }
+}
+
+.GarrisonAdmin-error {
+  border-inline-start: 3px solid var(--error-color, #d14848);
+  margin: 8px 0;
+  padding: 6px 10px;
+}
+
+/* The host row wraps so the install form can take a line of its own. */
+.GarrisonAdmin-host {
+  flex-wrap: wrap;
+}
+
+.GarrisonProvision {
+  flex-basis: 100%;
+}
