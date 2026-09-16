@@ -1,0 +1,101 @@
+# The agent runs on other people's machines, so the things that must not break
+# are the boundary and the stop ladder. Both are tested, and both tests were
+# proved by reintroducing the bug they catch — see the README.
+name: CI
+on:
+  push: { branches: [main] }
+  pull_request:
+  workflow_dispatch:
+permissions: { contents: read }
+
+jobs:
+  go:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with: { go-version: '1.24', cache: true, cache-dependency-path: agent/go.sum }
+
+      - name: Formatting
+        working-directory: agent
+        run: |
+          unformatted=$(gofmt -l .)
+          if [ -n "$unformatted" ]; then echo "$unformatted"; exit 1; fi
+
+      - run: go vet ./...
+        working-directory: agent
+
+      # -race matters more here than in most projects: the agent runs a
+      # goroutine per request plus a stream emitting console lines, all
+      # writing to one websocket.
+      - run: go test -race ./...
+        working-directory: agent
+
+      # The agent ships as a static binary for Linux hosts; if cross-compiling
+      # breaks, the product cannot be delivered even though tests pass.
+      - name: Cross-compile the agent
+        working-directory: agent
+        run: GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build ./cmd/garrison-agent
+
+  php:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with: { php-version: '8.3', coverage: none }
+
+      - run: composer validate --strict
+
+      - name: Lint every PHP file
+        run: find src migrations extend.php -name '*.php' -print0 | xargs -0 -n1 php -l
+
+      # 🚨 The prefix check is a CI gate, not a pre-release ritual.
+      #
+      # Raw SQL that names a table without the database prefix passes every
+      # local test — a dev install has no prefix — and 500s any customer who
+      # set one. One sweep across the other repos found it in 11 places. It is
+      # cheap to check on every push and expensive to find any other way.
+      - name: No raw SQL without the table prefix
+        run: python3 tools/check-table-prefix.py .
+
+      # 🚨 A duplicate key in a locale file makes Symfony's YAML parser throw,
+      # and Flarum loads every extension's locale on boot — so it 500s /api for
+      # every user of the forum, not just this extension's pages. It happened
+      # twice in one afternoon: both times the parent already had a key with
+      # the obvious name, several hundred lines away.
+      - name: No duplicate locale keys
+        run: python3 tools/check-locale.py
+
+      # The date arithmetic that decides whether somebody's server restarts
+      # tonight, and the session maths behind every playtime total. No
+      # database, milliseconds, so there is no excuse for skipping it.
+      - name: Unit tests
+        run: |
+          composer install --no-interaction --no-progress
+          vendor/bin/phpunit
+
+  js:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+
+      # 🚨 The placement accounting, which decides whether the stock sidebar
+      # shows the widget. Every way it can be wrong is silent: a mis-count
+      # either hides the widget on every page or draws it twice, and neither
+      # throws anything. A forum with Bespoke installed but no Garrison block
+      # placed once got the widget nowhere at all, and the only symptom was an
+      # absence.
+      - name: Unit tests
+        working-directory: js
+        run: node --test tests/
+
+      # A bundle that does not build is an extension that cannot be released,
+      # and webpack failures here are usually a bad import path — which is the
+      # one class of mistake that takes the forum's whole JS down.
+      - name: Build the bundle
+        working-directory: js
+        run: |
+          npm ci --no-audit --no-fund || npm install --no-audit --no-fund
+          npm run build

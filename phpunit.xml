@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  🚨 UNIT tests only, and deliberately no database.
+
+  Flarum's integration harness needs a live MySQL and a whole booted app, which
+  is the right tool for testing routes and permissions and the wrong one for
+  the arithmetic in this suite: date maths that decides whether a restart fires
+  tonight or tomorrow night should be provable in milliseconds, without
+  infrastructure, so it actually gets run.
+-->
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="tests/bootstrap.php"
+         colors="true"
+         failOnWarning="true"
+         failOnRisky="true">
+    <testsuites>
+        <testsuite name="unit">
+            <directory suffix="Test.php">tests</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
