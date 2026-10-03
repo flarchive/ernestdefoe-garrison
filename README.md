@@ -2,13 +2,20 @@
 
 > **Read-only archive of released versions of ernestdefoe/garrison.** Not for installation: use [Packagist](https://packagist.org/packages/ernestdefoe/garrison) or the [upstream repository](https://github.com/ernestdefoe/garrison).
 
-**0** versions archived · Latest: [`v1.5.0`](https://github.com/flarchive/ernestdefoe-garrison/tree/archive/v1.5.0) · License: `MIT` · Flarum: `^2.0`
+**8** versions archived · Latest: [`v1.5.0`](https://github.com/flarchive/ernestdefoe-garrison/tree/archive/v1.5.0) · License: `MIT` · Flarum: `^2.0`
 
 ## Archived Versions
 
 | Version | Released | Flarum | Source |
 |---|---|---|---|
-| — | — | — | — |
+| `v1.1.0` | 2026-09-16 | `^2.0` | [Browse](https://github.com/flarchive/ernestdefoe-garrison/tree/archive/v1.1.0) |
+| `v1.2.0` | 2026-09-16 | `^2.0` | [Browse](https://github.com/flarchive/ernestdefoe-garrison/tree/archive/v1.2.0) |
+| `v1.2.1` | 2026-09-16 | `^2.0` | [Browse](https://github.com/flarchive/ernestdefoe-garrison/tree/archive/v1.2.1) |
+| `v1.2.2` | 2026-09-16 | `^2.0` | [Browse](https://github.com/flarchive/ernestdefoe-garrison/tree/archive/v1.2.2) |
+| `v1.2.3` | 2026-09-16 | `^2.0` | [Browse](https://github.com/flarchive/ernestdefoe-garrison/tree/archive/v1.2.3) |
+| `v1.3.0` | 2026-09-16 | `^2.0` | [Browse](https://github.com/flarchive/ernestdefoe-garrison/tree/archive/v1.3.0) |
+| `v1.4.0` | 2026-09-18 | `^2.0` | [Browse](https://github.com/flarchive/ernestdefoe-garrison/tree/archive/v1.4.0) |
+| `v1.5.0` | 2026-09-19 | `^2.0` | [Browse](https://github.com/flarchive/ernestdefoe-garrison/tree/archive/v1.5.0) |
 
 Catalog entry: [packages/ernestdefoe-garrison.json](https://github.com/flarchive/archive-index/blob/main/packages/ernestdefoe-garrison.json)
 
