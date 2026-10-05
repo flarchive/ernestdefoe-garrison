@@ -1,0 +1,32 @@
+/bin/
+/dist/
+*.test
+.DS_Store
+
+# 🚨 Anchored with a leading slash, and that is not style.
+#
+# Unanchored, `garrison-agent` matches ANY path component with that name —
+# including the source directory cmd/garrison-agent/. Written without the
+# slash it silently excluded both command packages from the repo: everything
+# built and tested locally, and CI failed with "directory not found" because
+# main.go had never been committed at all.
+/garrison-agent
+/garrison-hub
+
+# Dev-only, and every one of these has shipped to a customer in some repo.
+#
+# 🚨 `.phpunit.result.cache` in particular: the Flarum skeleton's ignore rule
+# misses it, and it was found sitting inside four paid extension zips. It is
+# harmless in itself and it is somebody's file listing, in a product they paid
+# for, that says nobody checked what went in the box.
+/vendor/
+/.phpunit.result.cache
+/composer.lock
+
+# 🚨 node_modules was tracked until 1.1.0 — 8,396 files, 98% of everything in
+# the repository. Harmless while this was private; wrong the moment it is not.
+# A public MIT repo whose tree is almost entirely somebody else's dependencies
+# is one nobody can read, and every clone pays for it. js/dist stays committed
+# on purpose: Flarum loads it and nothing rebuilds it on install, which is why
+# CI fails if it has drifted from its source.
+js/node_modules/
