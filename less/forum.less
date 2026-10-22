@@ -1,0 +1,1013 @@
+/*
+ * 🚨 Nothing here redefines a core CSS variable at :root. A theme sets those,
+ * and an extension that overwrites one changes the whole forum rather than its
+ * own corner of it.
+ */
+
+.GarrisonWidget {
+  margin-bottom: 15px;
+}
+
+.GarrisonWidget-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.GarrisonServer {
+  font-size: 14px;
+}
+
+/*
+ * 🚨 The flex row moved onto the LINK, not the <li>.
+ *
+ * The whole row is a target now — a 90px name inside a 240px sidebar entry is
+ * something people aim at and miss — so the anchor has to BE the row rather
+ * than sit inside it. Laying out the li and then putting an inline anchor in it
+ * would give a link the width of its text and leave the rest of the row dead.
+ */
+.GarrisonServer-link {
+  align-items: center;
+  border-radius: 4px;
+  color: inherit;
+  display: flex;
+  gap: 4px 8px;
+  padding: 3px 4px;
+  /* Margin, not padding, on the parent: the highlight should reach slightly
+     past the text without indenting the list. */
+  margin: 0 -4px;
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    background: var(--control-bg);
+    color: inherit;
+    text-decoration: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: -2px;
+  }
+
+  /*
+   * 🚨 WRAPS rather than competing for a fixed width.
+   *
+   * This row lives in at least four containers of different widths — the stock
+   * sidebar, a fof/forum-widgets-core panel, a Bespoke zone and a Page Builder
+   * block — and no set of min-widths is right in all of them. Tuned for the
+   * sidebar, the name came out as "Bare-metal …" inside the narrower fof
+   * panel, with the status cut to "N". Letting the status drop to a second
+   * line keeps the NAME whole everywhere, which is the thing somebody is
+   * actually looking for.
+   */
+  flex-wrap: wrap;
+
+  /*
+   * A wordmark is wide and a widget column is narrow, so the logo is capped
+   * hard here — the server's NAME is what somebody scans for, and a logo that
+   * eats it has won the wrong trade. On the status page, where there is room,
+   * the same logo gets 150px.
+   */
+  .GarrisonMark--custom {
+    max-height: 16px;
+    max-width: 34px;
+  }
+}
+
+.GarrisonServer-name {
+  color: var(--heading-color);
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/*
+ * 🚨 The NAME gets the room, and the detail shrinks.
+ *
+ * With `flex: none` on the detail and `1 1 auto` on the name, a long status
+ * message won the whole row and truncated the server's name to two letters.
+ * In a sidebar the name is the thing somebody is scanning for — everything
+ * else is secondary and must give way first.
+ */
+.GarrisonServer-players {
+  color: var(--muted-color);
+  flex: 0 1 auto;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  // Pushed right when it shares the line, and simply on the next line when it
+  // cannot. Never truncated: a status cut to "N" says nothing at all.
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+/*
+ * The identity group: dot, mark, name. Never breaks up, and takes the whole
+ * line when the status cannot fit beside it.
+ */
+.GarrisonServer-identity {
+  align-items: center;
+  display: flex;
+  flex: 1 1 60%;
+  gap: 8px;
+  min-width: 0;
+}
+
+.GarrisonServer-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/*
+ * State is carried by shape as well as colour — a dot alone fails for anybody
+ * who cannot separate the two, and "is it up" is the one thing this widget
+ * exists to answer.
+ */
+.GarrisonServer-state {
+  border-radius: 50%;
+  flex: none;
+  height: 9px;
+  width: 9px;
+  background: var(--muted-color);
+
+  &--running { background: #2d7550; }
+  &--crashed { background: var(--error-color); }
+  &--starting,
+  &--stopping { background: #93670a; }
+}
+
+/*
+ * 🚨 A stale row says so rather than confidently showing a memory. A panel
+ * displaying a twenty-minute-old "running" is how a twenty-hour outage goes
+ * unnoticed — which is the exact failure this product exists to prevent.
+ */
+.GarrisonServer--stale {
+  opacity: 0.55;
+}
+
+/* ---------- the sidebar heading link ---------- */
+
+.GarrisonSidebar-title {
+  align-items: baseline;
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+.GarrisonSidebar-more {
+  font-size: 12px;
+  font-weight: 400;
+}
+
+/* ---------- the status page ---------- */
+
+.GarrisonPage-title {
+  margin: 0 0 16px;
+}
+
+.GarrisonCards {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.GarrisonCard {
+  background: var(--body-bg);
+  border: 1px solid var(--control-bg);
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 16px;
+}
+
+.GarrisonCard-head {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+}
+
+.GarrisonCard-name {
+  flex: 1 1 auto;
+  font-size: 16px;
+  margin: 0;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.GarrisonCard-state {
+  color: var(--muted-color);
+  flex: none;
+  font-size: 13px;
+}
+
+/*
+ * 🚨 Stale is a warning, not a shade of grey. On a card the whole point is
+ * that "Running" and "Running, last heard from 40 minutes ago" must not look
+ * the same at a glance.
+ */
+.GarrisonCard--stale {
+  border-color: var(--alert-warning-bg, #93670a);
+}
+
+.GarrisonCard-stale {
+  color: var(--muted-color);
+  font-size: 13px;
+  margin: 0;
+}
+
+.GarrisonCard-facts {
+  display: grid;
+  gap: 2px 12px;
+  grid-template-columns: auto 1fr;
+  margin: 0;
+
+  dt {
+    color: var(--muted-color);
+    font-size: 13px;
+  }
+
+  dd {
+    font-size: 13px;
+    // Figures line up down the column rather than jittering as they change.
+    font-variant-numeric: tabular-nums;
+    margin: 0;
+  }
+}
+
+.GarrisonCard-join {
+  align-items: center;
+  border-top: 1px solid var(--control-bg);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 10px;
+}
+
+.GarrisonCard-joinLabel {
+  color: var(--muted-color);
+  font-size: 13px;
+}
+
+.GarrisonCard-joinValue {
+  // Selectable and monospaced: an address exists to be copied.
+  font-size: 12px;
+  user-select: all;
+}
+
+.GarrisonControls {
+  align-items: center;
+  display: flex;
+  flex: none;
+  gap: 4px;
+}
+
+.GarrisonControls-error {
+  color: var(--error-color);
+  font-size: 12px;
+  margin-right: 4px;
+}
+
+/* ---------- game marks ---------- */
+
+/*
+ * 🚨 The mark inherits the theme's text colour rather than carrying its own.
+ * These are neutral glyphs, not brand marks — a fixed colour would fight every
+ * theme, and there is no brand here to protect.
+ */
+.GarrisonMark {
+  color: var(--muted-color);
+  flex: none;
+}
+
+.GarrisonMark--custom {
+  /*
+   * 🚨 A real game logo is a WIDE wordmark, not a square icon — Steam's are
+   * typically 640x360 with transparent margins. Forcing one into a 16px box
+   * makes it an unreadable smudge, which is worse than the glyph it replaced.
+   * So a custom image gets width to be legible and is contained, never
+   * cropped: a logo with its edges cut off looks like a broken asset.
+   */
+  border-radius: 3px;
+  height: auto;
+  max-height: 100%;
+  object-fit: contain;
+  width: auto;
+}
+
+.GarrisonMark--monogram {
+  align-items: center;
+  background: var(--control-bg);
+  border-radius: 3px;
+  color: var(--control-color);
+  display: inline-flex;
+  font-size: 10px;
+  font-weight: 700;
+  height: 16px;
+  justify-content: center;
+  letter-spacing: 0.02em;
+  width: 16px;
+}
+
+.GarrisonCard-mark {
+  align-items: center;
+  display: inline-flex;
+  flex: none;
+  height: 38px;
+
+  /*
+   * A game's wordmark is the fastest way to know what a server IS, so it gets
+   * real room — this is identity, not a bullet point. Contained rather than
+   * cropped: a logo with its edges cut off reads as a broken asset.
+   */
+  .GarrisonMark--custom {
+    max-height: 38px;
+    max-width: 150px;
+  }
+
+  .GarrisonMark--monogram {
+    font-size: 13px;
+    height: 26px;
+    width: 26px;
+  }
+}
+
+/* ---------- health ---------- */
+
+/*
+ * 🚨 Loud on purpose. "Running" and "running but unjoinable" looking similar
+ * is the exact failure this product exists to prevent — a twenty-hour outage
+ * that every dashboard showed as green.
+ */
+.GarrisonHealth {
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+  gap: 4px;
+  padding: 10px 12px;
+
+  strong {
+    font-size: 14px;
+  }
+}
+
+.GarrisonHealth--unready {
+  background: var(--alert-error-bg, #b23b32);
+  color: var(--alert-error-color, #fff);
+}
+
+.GarrisonHealth--attention {
+  background: var(--alert-warning-bg, #a9750d);
+  color: var(--alert-warning-color, #fff);
+}
+
+/*
+ * Unchecked is quiet, and deliberately NOT green. It is a statement that
+ * nobody looked, which must not be mistaken for a clean bill of health.
+ */
+.GarrisonHealth--unknown {
+  color: var(--muted-color);
+  font-size: 13px;
+  font-style: italic;
+  margin: 0;
+  padding: 0;
+}
+
+.GarrisonHealth-checks {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+  font-size: 12px;
+
+  li {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.GarrisonHealth-checkName {
+  font-weight: 600;
+}
+
+.GarrisonHealth-checkDetail {
+  opacity: 0.85;
+  // Probe detail is machine output — ports, byte counts, log fragments.
+  font-family: var(--code-font, monospace);
+  font-size: 11px;
+}
+
+/* ---------- console ---------- */
+
+.GarrisonCard-console {
+  border-top: 1px solid var(--control-bg);
+  padding-top: 8px;
+}
+
+.GarrisonConsole-out {
+  background: var(--code-bg, rgba(0, 0, 0, 0.25));
+  border-radius: 4px;
+  font-family: var(--code-font, monospace);
+  font-size: 12px;
+  line-height: 1.5;
+  max-height: 260px;
+  overflow-y: auto;
+  padding: 8px 10px;
+  // Long lines wrap rather than scrolling sideways: a console you have to
+  // scroll horizontally is a console nobody reads.
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.GarrisonConsole-line.is-stderr {
+  // 🚨 Tinted, not red. A Java server writes most of its normal output to
+  // stderr; painting all of it as an error would make every healthy Minecraft
+  // console look like a disaster.
+  color: var(--warning-color, #d4a02e);
+}
+
+.GarrisonConsole-empty {
+  color: var(--muted-color);
+  margin: 0;
+}
+
+.GarrisonConsole-send {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+/*
+ * The per-server page.
+ *
+ * 🚨 Its own block rather than reusing the card's, because the two have
+ * different jobs: a card is scanned in a list of eleven, a page is read by one
+ * person who arrived from an alert. Sharing the classes would mean every
+ * tweak to one silently restyling the other.
+ */
+.GarrisonServerPage-back {
+  margin-bottom: 8px;
+}
+
+.GarrisonServerPage-head {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+/*
+ * 🚨 THE LOGO IS CAPPED HERE, and its absence was the most visible bug in the
+ * product.
+ *
+ * `.GarrisonMark--custom` is deliberately `width: auto; height: auto` so a wide
+ * wordmark stays legible rather than being squashed into a square — which means
+ * every container that shows one has to say how much room it may have. The
+ * widget says 34×16, the card says 150×38, and this said nothing at all: the
+ * Valheim wordmark rendered at its natural 640px, took the entire top of the
+ * page, pushed the server's own name to one side and left a field of empty
+ * space beneath it. Found by looking at a README screenshot, which is exactly
+ * what that pass is for.
+ *
+ * Bigger than the card's, because this page is ABOUT one server and the logo is
+ * the fastest way to know which — but bounded, because the name is the heading
+ * and a logo that outweighs it is the wrong way round.
+ */
+.GarrisonServerPage-mark {
+  align-items: center;
+  display: inline-flex;
+  flex: none;
+  height: 56px;
+
+  .GarrisonMark--custom {
+    max-height: 56px;
+    max-width: 220px;
+  }
+
+  .GarrisonMark--monogram {
+    font-size: 18px;
+    height: 40px;
+    width: 40px;
+  }
+}
+
+.GarrisonServerPage-identity {
+  /* Takes the slack so the controls sit hard right, and shrinks before the
+     mark or the buttons do — a name can wrap, a button cannot. */
+  flex: 1 1 200px;
+  min-width: 0;
+}
+
+.GarrisonServerPage-name {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.GarrisonServerPage-state {
+  align-items: center;
+  color: var(--muted-color);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.GarrisonServerPage-staleNote {
+  font-style: italic;
+}
+
+.GarrisonServerPage-facts,
+.GarrisonServerPage-join dl {
+  display: grid;
+  gap: 4px 16px;
+  grid-template-columns: auto 1fr;
+  margin: 0 0 16px;
+
+  dt {
+    color: var(--muted-color);
+    font-weight: normal;
+  }
+
+  dd {
+    margin: 0;
+  }
+}
+
+.GarrisonServerPage-join {
+  h3 {
+    font-size: 15px;
+    margin: 0 0 6px;
+  }
+}
+
+/*
+ * The instructions, above the values.
+ *
+ * 🚨 Full text colour, not muted. This is the one line on the page a player who
+ * has never joined this game actually needs, and greying it out would rank it
+ * below the address it explains.
+ */
+.GarrisonServerPage-connect {
+  margin: 0 0 10px;
+  line-height: 1.5;
+
+  code {
+    // The address inside a sentence still has to be copyable at a glance.
+    word-break: break-all;
+  }
+}
+
+/*
+ * The two fallbacks, muted, because both are admissions rather than answers:
+ * one says the port is only a guess, the other that nobody published anything.
+ */
+.GarrisonServerPage-portHint,
+.GarrisonServerPage-joinMissing {
+  color: var(--muted-color);
+  font-size: 13px;
+  margin: 8px 0 0;
+}
+
+.GarrisonServerPage-missing {
+  color: var(--muted-color);
+  padding: 24px 0;
+}
+
+/* A console somebody came to READ, not to glance at. */
+.GarrisonConsole--tall .GarrisonConsole-out {
+  height: 420px;
+}
+
+@media @phone {
+  /* 🚨 Not 420px on a phone: that is most of the screen, and the controls and
+     backups panel below it would be off it entirely. */
+  .GarrisonConsole--tall .GarrisonConsole-out {
+    height: 240px;
+  }
+}
+
+/*
+ * Backups.
+ */
+.GarrisonBackups {
+  margin-top: 20px;
+}
+
+.GarrisonBackups-head {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  margin-bottom: 10px;
+
+  h3 {
+    font-size: 15px;
+    margin: 0;
+  }
+}
+
+.GarrisonBackups-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.GarrisonBackups-item {
+  align-items: center;
+  border-top: 1px solid var(--control-bg);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  padding: 8px 0;
+}
+
+.GarrisonBackups-when {
+  align-items: center;
+  display: flex;
+  flex: 1 1 200px;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+}
+
+.GarrisonBackups-tag {
+  background: var(--control-bg);
+  border-radius: 10px;
+  color: var(--muted-color);
+  font-size: 11px;
+  padding: 1px 8px;
+}
+
+.GarrisonBackups-size {
+  color: var(--muted-color);
+  font-variant-numeric: tabular-nums;
+}
+
+.GarrisonBackups-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.GarrisonBackups-delete {
+  color: var(--alert-error-color, #d14848);
+}
+
+/*
+ * 🚨 The confirmation takes the whole row rather than sitting inside the
+ * actions column. It carries two sentences, and squeezing them into a button's
+ * worth of width is how a warning becomes something people click past.
+ */
+.GarrisonBackups-confirm {
+  align-items: center;
+  display: flex;
+  flex-basis: 100%;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  p {
+    flex: 1 1 240px;
+    margin: 0;
+  }
+}
+
+.GarrisonBackups-empty {
+  color: var(--muted-color);
+}
+
+.GarrisonBackups-outcome {
+  border-inline-start: 3px solid var(--muted-color);
+  margin-bottom: 10px;
+  padding: 6px 10px;
+
+  strong {
+    display: block;
+  }
+}
+
+.GarrisonBackups-outcome--ok {
+  border-inline-start-color: var(--success-color, #6bbf6b);
+}
+
+.GarrisonBackups-outcome--bad {
+  border-inline-start-color: var(--alert-error-color, #d14848);
+}
+
+.GarrisonBackups-outcomeDetail {
+  color: var(--muted-color);
+  font-size: 12px;
+}
+
+.GarrisonBackups-stopNote {
+  display: block;
+  margin-top: 4px;
+}
+
+.GarrisonBackups-step {
+  color: var(--muted-color);
+  font-style: italic;
+  margin: 0 0 8px;
+}
+
+/*
+ * 🚨 Quiet by default. An operator with no off-site storage should learn it
+ * exists without being nagged about it every time they open the panel — but
+ * the one whose copies are FAILING needs to see that immediately, because the
+ * disaster it covers is the one where the local backups died with the disk.
+ */
+.GarrisonBackups-offsite {
+  color: var(--muted-color);
+  font-size: 12px;
+  margin: 0 0 10px;
+}
+
+.GarrisonBackups-offsite--bad {
+  border-inline-start: 3px solid var(--alert-error-color, #d14848);
+  color: inherit;
+  padding: 6px 10px;
+
+  strong {
+    display: block;
+  }
+}
+
+/*
+ * Server settings.
+ */
+.GarrisonSettings {
+  margin-top: 24px;
+}
+
+.GarrisonSettings h3 {
+  font-size: 15px;
+  margin: 0 0 8px;
+}
+
+.GarrisonSettings-files {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 12px;
+
+  .is-open {
+    font-weight: 600;
+    text-decoration: underline;
+  }
+}
+
+.GarrisonSettings-entry {
+  border-top: 1px solid var(--control-bg);
+  padding: 10px 0;
+
+  label {
+    display: block;
+    font-weight: 600;
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+}
+
+/*
+ * 🚨 A locked setting is DIMMED and still shown, never hidden.
+ *
+ * An operator looking for a setting that is not on screen concludes the panel
+ * is incomplete and goes to edit the file by hand — which is the outcome this
+ * whole feature exists to avoid. Showing it greyed says "this exists, and
+ * somebody decided you may not change it", which is a different and true thing.
+ */
+.GarrisonSettings-entry.is-locked {
+  opacity: 0.65;
+}
+
+.GarrisonSettings-section {
+  color: var(--muted-color);
+  font-weight: normal;
+
+  &::after {
+    content: ' · ';
+  }
+}
+
+.GarrisonSettings-help {
+  color: var(--muted-color);
+  display: block;
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.GarrisonSettings-control {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+
+  .FormControl {
+    /* Shrinks before the button does: a button that wraps under a field reads
+       as a separate control rather than that field's Save. */
+    flex: 1 1 120px;
+    min-width: 0;
+  }
+}
+
+.GarrisonSettings-error {
+  border-inline-start: 3px solid var(--alert-error-color, #d14848);
+  margin: 8px 0;
+  padding: 6px 10px;
+}
+
+.GarrisonSettings-empty {
+  color: var(--muted-color);
+}
+
+/*
+ * Who is playing.
+ */
+.GarrisonPlayers {
+  margin-bottom: 16px;
+
+  h3 {
+    font-size: 15px;
+    margin: 0 0 6px;
+  }
+}
+
+.GarrisonPlayers-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.GarrisonPlayers-player {
+  background: var(--control-bg);
+  border-radius: 12px;
+  padding: 2px 10px;
+
+  /* A display name can be anything the game allowed, including something very
+     long. It wraps rather than pushing the page sideways. */
+  overflow-wrap: anywhere;
+}
+
+.GarrisonPlayers--empty {
+  color: var(--muted-color);
+}
+
+/*
+ * Linking a forum account to an in-game character.
+ */
+.GarrisonLink {
+  border-top: 1px solid var(--control-bg);
+  margin-top: 24px;
+  padding-top: 16px;
+
+  h3 {
+    font-size: 15px;
+    margin: 0 0 6px;
+  }
+}
+
+.GarrisonLink-help {
+  color: var(--muted-color);
+  margin: 0 0 8px;
+  /* Prose, so it reads at a comfortable measure rather than the full page. */
+  max-width: 62ch;
+}
+
+.GarrisonLink-form {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  .FormControl {
+    flex: 1 1 180px;
+    min-width: 0;
+  }
+}
+
+/*
+ * 🚨 Monospaced and spaced out, because this is copied off a game screen by
+ * eye. The alphabet already excludes 0/O and 1/I/L; the rest is making each
+ * character easy to tell apart while typing.
+ */
+.GarrisonLink-code {
+  flex-grow: 0 !important;
+  font-family: var(--code-font-family, monospace);
+  letter-spacing: 0.15em;
+  max-width: 180px;
+  text-transform: uppercase;
+}
+
+.GarrisonLink-error {
+  border-inline-start: 3px solid var(--alert-error-color, #d14848);
+  margin: 0 0 8px;
+  padding: 6px 10px;
+}
+
+/*
+ * Playtime on a profile, and the leaderboard on a server.
+ */
+.GarrisonProfile {
+  margin-top: 12px;
+}
+
+.GarrisonProfile-title,
+.GarrisonBoard h3 {
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  margin: 0 0 6px;
+  text-transform: uppercase;
+}
+
+.GarrisonProfile-list,
+.GarrisonBoard-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.GarrisonProfile-row,
+.GarrisonBoard-row {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 3px 0;
+}
+
+.GarrisonProfile-player,
+.GarrisonBoard-who {
+  font-weight: 600;
+  /* A display name can be anything the game allowed. It wraps rather than
+     pushing a profile card sideways. */
+  overflow-wrap: anywhere;
+}
+
+.GarrisonBoard-alias,
+.GarrisonProfile-server {
+  color: var(--muted-color);
+  font-size: 12px;
+}
+
+.GarrisonProfile-time,
+.GarrisonBoard-time {
+  color: var(--muted-color);
+  margin-inline-start: auto;
+  /* Digits line up down the column, so the list can be read as a ranking
+     rather than a set of unrelated numbers. */
+  font-variant-numeric: tabular-nums;
+}
+
+/*
+ * 🚨 The one piece of information here that changes anything: a name somebody
+ * could go and join right now, rather than a name that was here on Tuesday.
+ */
+.GarrisonBoard-dot {
+  background: var(--success-color, #6bbf6b);
+  border-radius: 50%;
+  display: inline-block;
+  height: 8px;
+  width: 8px;
+}
+
+.GarrisonBoard {
+  margin-bottom: 16px;
+}
+
+/*
+ * 🚨 A Page Builder block sits inside a layout somebody else designed, so it
+ * brings no margins of its own — the surrounding section owns the spacing, and
+ * a block that adds its own is the one that looks misaligned on every page it
+ * is placed on.
+ */
+.GarrisonPageBuilderBlock {
+  .GarrisonServer {
+    /* Compact rows are a layout choice the page's editor made. */
+    &-meta {
+      display: block;
+    }
+  }
+}
+
+.GarrisonPageBuilderBlock.is-compact {
+  .GarrisonServer-meta,
+  .GarrisonServer-health {
+    display: none;
+  }
+}
