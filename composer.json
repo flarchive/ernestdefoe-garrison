@@ -1,0 +1,76 @@
+{
+    "name": "ernestdefoe/garrison",
+    "description": "Garrison \u2014 run your game servers from the forum the players already live in. Any server you can install, with or without Docker.",
+    "type": "flarum-extension",
+    "keywords": [
+        "flarum",
+        "game",
+        "server",
+        "minecraft",
+        "valheim",
+        "panel"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ernestdefoe",
+            "email": "ernestdefoe@gmail.com"
+        }
+    ],
+    "support": {
+        "forum": "https://discuss.flarum.org/d/39866-garrison-garrison-pro-built-using-ai"
+    },
+    "require": {
+        "php": "^8.3",
+        "flarum/core": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "ErnestDefoe\\Garrison\\": "src/"
+        }
+    },
+    "extra": {
+        "flarum-extension": {
+            "title": "Garrison",
+            "category": "feature",
+            "icon": {
+                "name": "fas fa-tower-observation",
+                "backgroundColor": "#1c2429",
+                "color": "#e5823f"
+            },
+            "optional-dependencies": [
+                "fof/forum-widgets-core",
+                "ernestdefoe/bespoke",
+                "ernestdefoe/page-builder"
+            ]
+        }
+    },
+    "require-dev": {
+        "flarum/phpstan": "^2.0",
+        "flarum/testing": "^2.0"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ErnestDefoe\\Garrison\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": [
+            "@test:unit",
+            "@test:integration"
+        ],
+        "test:unit": "phpunit -c tests/phpunit.unit.xml",
+        "test:integration": "phpunit -c tests/phpunit.integration.xml",
+        "test:setup": "@php tests/integration/setup.php",
+        "analyse:phpstan": "phpstan analyse"
+    },
+    "scripts-descriptions": {
+        "test": "Runs all tests.",
+        "test:unit": "Runs all unit tests.",
+        "test:integration": "Runs all integration tests.",
+        "test:setup": "Sets up a database for use with integration tests. Execute this only once.",
+        "analyse:phpstan": "Run static analysis"
+    },
+    "minimum-stability": "beta",
+    "prefer-stable": true
+}
